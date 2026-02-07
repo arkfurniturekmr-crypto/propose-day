@@ -66,6 +66,36 @@
             }
         }
 
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: white;
+            border: 2px solid var(--rose);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .back-btn:hover {
+            background: var(--soft-pink);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(201, 24, 74, 0.3);
+        }
+
+        .back-btn.hidden {
+            display: none;
+        }
+
         /* Page 1 - Proposal */
         #page1 {
             background: linear-gradient(135deg, var(--cream) 0%, #ffe5ec 50%, var(--soft-pink) 100%);
@@ -300,6 +330,12 @@
             padding: 2rem;
         }
 
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .promise-letter {
             background: white;
             padding: 3rem;
@@ -413,6 +449,14 @@
         }
 
         @media (max-width: 768px) {
+            .back-btn {
+                top: 1rem;
+                left: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
             .letter-container {
                 padding: 2rem 1.5rem;
             }
@@ -445,6 +489,9 @@
     </style>
 </head>
 <body>
+    <!-- Back Button -->
+    <button id="backBtn" class="back-btn hidden">←</button>
+
     <!-- Page 1: Proposal -->
     <div id="page1" class="page active">
         <!-- Floating Flowers -->
@@ -501,9 +548,7 @@
     <!-- Page 3: Promise with Photo -->
     <div id="page3" class="page">
         <div class="photo-container">
-            <div class="photo-container">
-  <img src="img.jpeg" alt="My Gorgeous Girlfriend" class="photo">
-</div>
+            <img src="img.jpeg" alt="My Gorgeous Girlfriend" class="photo">
         </div>
         
         <div class="promise-letter">
@@ -598,6 +643,23 @@
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const pleadingText = document.getElementById('pleadingText');
+        const backBtn = document.getElementById('backBtn');
+
+        // Update back button visibility
+        function updateBackButton() {
+            if (currentPage === 1) {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+        }
+
+        // Back button functionality
+        backBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        });
 
         noBtn.addEventListener('click', () => {
             // Make Yes button bigger
@@ -641,8 +703,12 @@
             document.getElementById(`page${currentPage}`).classList.remove('active');
             currentPage = pageNum;
             document.getElementById(`page${currentPage}`).classList.add('active');
+            updateBackButton();
             window.scrollTo(0, 0);
         }
+
+        // Initialize back button state
+        updateBackButton();
     </script>
 </body>
 </html>
